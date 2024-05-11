@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Reservation System</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+</head>
+<body>
+<nav>
+    <div class="container-fluid">
+        <a href="/index">Home Page</a>
+    </div>
+</nav>
+<br /><br />
+<div class="container">
+    <h2 class="text-center">Login Form</h2>
+    <form method="post" action="/login/authorization" class="form-horizontal">
+        <label for="server">Choose a server:</label>
+        <select name="server" id="server">
+            <option value="EUNE">EUNE</option>
+            <option value="NA">NA</option>
+        </select>
+        <label for="nickname">Nickname:</label>
+        <input type="text" id="nickname" name="nickname" placeholder="Enter nickname..."/>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Enter password..."/>
+        <button type="submit" >Submit</button>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Marketplace</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+</head>
+<body>
+<nav>
+    <a href="/index">Home Page</a>
+</nav>
+<br /><br /><br />
+<div>
+    <h2 class="text-center">Registration</h2>
+    <form method="post" action="/register/save">
+        <label for="server">Choose a server:</label>
+        <select name="server" id="server">
+            <option value="EUNE">EUNE</option>
+            <option value="NA">NA</option>
+        </select>
+        <label for="nickname">Nickname:</label>
+        <input id="nickname" name="nickname" placeholder="Enter nickname" type="text"/>
+        <label for="password">Password:</label>
+        <input id="password" name="password" placeholder="Enter password" type="password"/>
+        <button type="submit">Register</button>
+    </form>
+</div>
+</body>
+</html>

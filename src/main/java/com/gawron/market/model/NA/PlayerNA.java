@@ -1,4 +1,4 @@
-package com.gawron.market.model.EUNE;
+package com.gawron.market.model.NA;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @Setter
 @Entity
 @Table(name="player")
-public class Player {
+public class PlayerNA {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -24,9 +24,13 @@ public class Player {
     @Column(nullable = false, columnDefinition = "decimal", precision = 10, scale = 2)
     private BigDecimal saldo;
 
-    public Player(){}
+    public String getNickname(){
+        return this.nickname;
+    }
 
-    public Player(String nickname, String password){
+    public PlayerNA(){}
+
+    public PlayerNA(String nickname, String password){
         this.nickname = nickname;
         this.password = password;
         this.saldo = BigDecimal.valueOf(500.00);
