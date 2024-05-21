@@ -28,6 +28,10 @@ public class PlayerNA {
         return this.nickname;
     }
 
+    public int getId(){
+        return this.id;
+    }
+
     public PlayerNA(){}
 
     public PlayerNA(String nickname, String password){

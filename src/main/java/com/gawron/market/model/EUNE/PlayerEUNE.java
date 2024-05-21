@@ -28,6 +28,10 @@ public class PlayerEUNE {
         return this.nickname;
     }
 
+    public int getId(){
+        return this.id;
+    }
+
     public PlayerEUNE(){}
 
     public PlayerEUNE(String nickname, String password){

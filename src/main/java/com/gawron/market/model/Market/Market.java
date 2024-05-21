@@ -30,6 +30,26 @@ public class Market {
     @Column(nullable = false, columnDefinition = "decimal", precision = 10, scale = 2)
     private BigDecimal prize;
 
+    public int getItemOwner(){
+        return itemOwner;
+    }
+
+    public String getItemName(){
+        return itemName;
+    }
+
+    public String getItemServer(){
+        return itemServer;
+    }
+
+    public String getUuid(){
+        return uuid;
+    }
+
+    public BigDecimal getPrize(){
+        return prize;
+    }
+
     public Market(){}
 
     public Market(int itemOwner, String itemName, String itemServer, BigDecimal prize, String uuid){

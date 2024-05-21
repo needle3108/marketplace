@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Marketplace</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+</head>
+<body>
+<nav>
+    <div>
+        <a href="/index">Home Page</a>
+        <a href="/logout">Logout</a>
+    </div>
+</nav>
+<h2>Marketplace</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Item name</th>
+        <th>Item server</th>
+        <th>uuid</th>
+        <th>Prize</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item: ${items}">
+        <td th:text="${item.getItemName()}"></td>
+        <td th:text="${item.getItemServer()}"></td>
+        <td th:text="${item.getUuid()}"></td>
+        <td th:text="${item.getPrize()}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

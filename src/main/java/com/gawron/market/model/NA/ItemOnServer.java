@@ -22,6 +22,22 @@ public class ItemOnServer {
     @Column(nullable = false, columnDefinition = "uniqueidentifier")
     private String uuid;
 
+    public int getId(){
+        return id;
+    }
+
+    public int getItemOwner(){
+        return itemOwner;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getUuid(){
+        return uuid;
+    }
+
     public ItemOnServer(){}
 
     public ItemOnServer (String name, int itemOwner, String uuid){

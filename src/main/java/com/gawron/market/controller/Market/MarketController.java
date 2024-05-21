@@ -1,18 +1,22 @@
 package com.gawron.market.controller.Market;
 
+import com.gawron.market.model.EUNE.ItemOnServer;
 import com.gawron.market.model.EUNE.PlayerEUNE;
 import com.gawron.market.model.NA.PlayerNA;
+import com.gawron.market.repository.EUNE.ItemOnServerEUNERepository;
 import com.gawron.market.repository.EUNE.PlayerEUNERepository;
 import com.gawron.market.repository.Market.MarketRepository;
+import com.gawron.market.repository.NA.ItemOnServerNARepository;
 import com.gawron.market.repository.NA.PlayerNARepository;
+import com.gawron.market.service.MarketService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -25,6 +29,15 @@ public class MarketController {
 
     @Autowired
     private PlayerEUNERepository playerEUNERepository;
+
+    @Autowired
+    private ItemOnServerEUNERepository itemOnServerEUNERepository;
+
+    @Autowired
+    private ItemOnServerNARepository itemOnServerNARepository;
+
+    @Autowired
+    private MarketService marketService;
 
     @GetMapping("/index")
     public String index(HttpSession session){
@@ -117,5 +130,70 @@ public class MarketController {
         }
         response.setStatus(201);
         return "/registerSuccess";
+    }
+
+    @GetMapping("/userInventory")
+    public String userInventory(Model model, HttpSession session){
+        if(!isUserLogged(session)){
+            return "/logSuccess";
+        }
+
+        if(session.getAttribute("server").equals("EUNE")){
+            PlayerEUNE player = playerEUNERepository.findByNickname(session.getAttribute("nickname").toString());
+            List<ItemOnServer> items = itemOnServerEUNERepository.findAllByItemOwner(player.getId());
+            model.addAttribute("items", items);
+        }
+        else{
+            PlayerNA player = playerNARepository.findByNickname(session.getAttribute("nickname").toString());
+            List<com.gawron.market.model.NA.ItemOnServer> items = itemOnServerNARepository.findAllByItemOwner(player.getId());
+            model.addAttribute("items", items);
+        }
+
+        return "/userInventory";
+    }
+
+    @RequestMapping(value="sell", method = RequestMethod.GET)
+    public String sell(@RequestParam("id") int id, Model model, HttpSession session){
+        if(!isUserLogged(session)){ return "/index"; }
+
+        if(session.getAttribute("server").equals("EUNE")){
+            ItemOnServer itemOnServer = itemOnServerEUNERepository.findById(id);
+            model.addAttribute("item", itemOnServer);
+        }
+        else{
+            com.gawron.market.model.NA.ItemOnServer itemOnServer = itemOnServerNARepository.findById(id);
+            model.addAttribute("item", itemOnServer);
+        }
+
+        return "/setPrize";
+    }
+
+    @RequestMapping(value="setPrize/confirm", method = RequestMethod.POST)
+    public String setPrizeConfirm(@RequestParam Map<String,String> prize, @RequestParam("id") int id, HttpSession session, Model model){
+        if(!isUserLogged(session)){ return "/index"; }
+
+        String msg = marketService.putOnMarket(id, prize.get("prize"), session);
+
+        model.addAttribute("msg", msg);
+
+        return "/putOnMarket";
+    }
+
+    @GetMapping("/market")
+    public String marketplace(HttpSession session, Model model){
+        if(!isUserLogged(session)){ return "/index"; }
+
+        model.addAttribute("items", marketService.getItems());
+
+        return "/market";
+    }
+
+    @GetMapping("/myOffers")
+    public String myOffers(HttpSession session, Model model){
+        if(!isUserLogged(session)){ return "/index"; }
+
+        model.addAttribute("items", marketService.getMyOffers(session));
+
+        return "/myOffers";
     }
 }
