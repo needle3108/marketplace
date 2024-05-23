@@ -32,6 +32,10 @@ public class PlayerNA {
         return this.id;
     }
 
+    public BigDecimal getSaldo(){
+        return saldo;
+    }
+
     public PlayerNA(){}
 
     public PlayerNA(String nickname, String password){

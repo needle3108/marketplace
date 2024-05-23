@@ -36,6 +36,14 @@ public class History {
     @Column(nullable = false, columnDefinition = "decimal", precision = 10, scale = 2)
     private BigDecimal prize;
 
+    public String getItemName(){
+        return itemName;
+    }
+
+    public BigDecimal getPrize(){
+        return prize;
+    }
+
     public History(){}
 
     public History(String sellerServer, int sellerID, String buyerServer, int buyerID, String uuid, String itemName, BigDecimal prize){

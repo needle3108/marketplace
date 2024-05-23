@@ -8,6 +8,7 @@ import com.gawron.market.repository.EUNE.PlayerEUNERepository;
 import com.gawron.market.repository.Market.MarketRepository;
 import com.gawron.market.repository.NA.ItemOnServerNARepository;
 import com.gawron.market.repository.NA.PlayerNARepository;
+import com.gawron.market.service.HistoryService;
 import com.gawron.market.service.MarketService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -38,6 +39,9 @@ public class MarketController {
 
     @Autowired
     private MarketService marketService;
+
+    @Autowired
+    private HistoryService historyService;
 
     @GetMapping("/index")
     public String index(HttpSession session){
@@ -135,7 +139,7 @@ public class MarketController {
     @GetMapping("/userInventory")
     public String userInventory(Model model, HttpSession session){
         if(!isUserLogged(session)){
-            return "/logSuccess";
+            return "/index";
         }
 
         if(session.getAttribute("server").equals("EUNE")){
@@ -168,6 +172,15 @@ public class MarketController {
         return "/setPrize";
     }
 
+    @RequestMapping(value="buy", method = RequestMethod.GET)
+    public String buy(@RequestParam("id") int id, Model model, HttpSession session){
+        if(!isUserLogged(session)){ return "/index"; }
+
+        model.addAttribute("msg", marketService.buyItem(session, id));
+
+        return "/buyMsg";
+    }
+
     @RequestMapping(value="setPrize/confirm", method = RequestMethod.POST)
     public String setPrizeConfirm(@RequestParam Map<String,String> prize, @RequestParam("id") int id, HttpSession session, Model model){
         if(!isUserLogged(session)){ return "/index"; }
@@ -185,6 +198,15 @@ public class MarketController {
 
         model.addAttribute("items", marketService.getItems());
 
+        if(session.getAttribute("server").equals("EUNE")){
+            PlayerEUNE player = playerEUNERepository.findByNickname(session.getAttribute("nickname").toString());
+            model.addAttribute("saldo", player.getSaldo());
+        }
+        else{
+            PlayerNA player = playerNARepository.findByNickname(session.getAttribute("nickname").toString());
+            model.addAttribute("saldo", player.getSaldo());
+        }
+
         return "/market";
     }
 
@@ -196,4 +218,15 @@ public class MarketController {
 
         return "/myOffers";
     }
+
+    @GetMapping("/history")
+    public String history(HttpSession session, Model model){
+        if(!isUserLogged(session)){ return "/index"; }
+
+        model.addAttribute("itemsSold", historyService.getHistorySell(session));
+        model.addAttribute("itemsBought", historyService.getHistoryBuy(session));
+
+        return "/history";
+    }
+
 }

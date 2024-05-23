@@ -14,7 +14,7 @@
 </nav>
 <h2 th:text="${item.getName()}"> Sell Item </h2>
 <div class="container">
-    <h2 class="text-center">Login Form</h2>
+    <h2 class="text-center">Set Prize</h2>
     <form method="post" th:action="@{/setPrize/confirm(id = ${item.getId()})}" class="form-horizontal">
         Prize: <input type="number" id="prize" name="prize" min="0.00" placeholder="0.00"/>
         <button type="submit" >Put item on market</button>

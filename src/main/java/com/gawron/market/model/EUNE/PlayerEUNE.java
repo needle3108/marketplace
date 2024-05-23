@@ -32,6 +32,10 @@ public class PlayerEUNE {
         return this.id;
     }
 
+    public BigDecimal getSaldo(){
+        return saldo;
+    }
+
     public PlayerEUNE(){}
 
     public PlayerEUNE(String nickname, String password){
